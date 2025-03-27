@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: hooman-cat-test # Change name to yours
+resources:
+  - ../base
+patches:
+
+  # Replaces the hostname for our route
+  - target:
+      kind: Route
+      version: v1
+      group: route.openshift.io
+    patch: |-
+      - op: replace
+        path: /spec/host
+        value: mycats-test.apps.edu-lab-2.mdlwr.se
+
+  # Add container-arguments specific to test
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/args
+        value: 
+          - "-comment='Test Mjau Mjau Test'"
+          - "-title='Test-Cat'"
+          - "-url=https://preview.redd.it/free-garfield-vectors-v0-sc4of16b88cd1.png?width=1148&format=png&auto=webp&s=fd25512047cce84583110d339bf6149b09b44f71"
